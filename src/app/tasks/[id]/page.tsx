@@ -10,7 +10,7 @@ export default async function EditTaskPage({ params }: Props) {
   const task = await response.json();
 
   return (
-    <div className="min-h-screen p-4">
+    <div className="p-4">
       <div className="mx-auto max-w-2xl pt-20">
         <TaskForm task={task} />
       </div>

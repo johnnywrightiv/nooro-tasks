@@ -1,14 +1,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import TaskSummary from "./tasks-summary";
+import TasksSummary from "./tasks-summary";
 import TaskCard from "./task-card";
 import { ClipboardList } from "lucide-react";
 import { Task } from "@/types/task";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+} from "@/components/ui/dialog";
+import { Button } from "./ui/button";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null);
 
   useEffect(() => {
     fetchTasks();
@@ -20,6 +30,7 @@ export default function TaskList() {
       const data: Task[] = await response.json();
       setTasks(data);
     } catch (error) {
+      alert("Error fetching tasks, check that your API server is running on localhost:4000");
       console.error("Error fetching tasks:", error);
     } finally {
       setLoading(false);
@@ -45,16 +56,17 @@ export default function TaskList() {
     }
   };
 
-  const deleteTask = async (id: number) => {
-    if (!confirm("Are you sure you want to delete this task?")) return;
+  const deleteTask = async () => {
+    if (selectedTaskId === null) return;
 
     try {
-      const response = await fetch(`http://localhost:4000/api/tasks/${id}`, {
+      const response = await fetch(`http://localhost:4000/api/tasks/${selectedTaskId}`, {
         method: "DELETE",
       });
 
       if (response.ok) {
-        setTasks(tasks.filter((t) => t.id !== id));
+        setTasks(tasks.filter((t) => t.id !== selectedTaskId));
+        setSelectedTaskId(null); // Clear the selected task
       }
     } catch (error) {
       console.error("Error deleting task:", error);
@@ -73,10 +85,10 @@ export default function TaskList() {
   if (tasks.length === 0) {
     return (
       <div className="mt-8 flex flex-col items-center justify-center text-center text-gray-500">
-        <TaskSummary tasks={completedTasks} />
+        <TasksSummary tasks={completedTasks} />
         <div className="border-b border-gray-500/40 my-4 w-full"></div>
         <ClipboardList className="mt-20 mb-4 h-12 w-12" />
-        <strong className="mb-2">You don&apos;t have any tasks registered yet.</strong  >
+        <strong className="mb-2">You don&apos;t have any tasks registered yet.</strong>
         <div>Create tasks and organize your to-do items.</div>
       </div>
     );
@@ -84,10 +96,38 @@ export default function TaskList() {
 
   return (
     <div className="space-y-4">
-      <TaskSummary tasks={completedTasks} />
+      <TasksSummary tasks={completedTasks} />
       {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} onToggle={() => toggleTask(task.id)} onDelete={() => deleteTask(task.id)} />
+        <TaskCard
+          key={task.id}
+          task={task}
+          onToggle={() => toggleTask(task.id)}
+          onDelete={() => setSelectedTaskId(task.id)}
+        />
       ))}
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={selectedTaskId !== null} onOpenChange={(open) => !open && setSelectedTaskId(null)}>
+        <DialogContent className="bg-zinc-800 border border-gray-400/20 text-white">
+          <DialogHeader>
+            <DialogTitle>Delete Task</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this task? This action cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="flex justify-end gap-4 mt-4">
+            <DialogClose asChild>
+              <Button variant={"outline"}>Cancel</Button>
+            </DialogClose>
+            <Button
+              variant={"destructive"}
+              onClick={deleteTask}
+            >
+              Delete
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
