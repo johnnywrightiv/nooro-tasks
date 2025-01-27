@@ -7,14 +7,14 @@ This is a Next.js app for managing tasks, connected to a backend server running 
 ### Clone Repositories
 **Frontend (this app):**
 ```bash
-git clone <frontend-repo-url>
-cd <frontend-repo-folder>
+git clone https://github.com/johnnywrightiv/nooro-tasks
+cd nooro-tasks
 ```
 
 **Backend (API server):**
 ```bash
-git clone <backend-repo-url>
-cd <backend-repo-folder>
+git clone https://github.com/johnnywrightiv/nooro-server
+cd nooro-server
 ```
 
 ### Install Dependencies
@@ -31,7 +31,7 @@ npm install
 ### Run the Servers
 **Start Backend (localhost:4000):**
 ```bash
-npm start
+npx tsx src/app.ts
 ```
 
 **Start Frontend (localhost:3000):**
@@ -39,11 +39,8 @@ npm start
 npm run dev
 ```
 
-### Configure Frontend
-Add a `.env.local` file in the frontend folder with:
-```env
-NEXT_PUBLIC_API_URL=http://localhost:4000
-```
+### Configure Server and Database
+Visit https://github.com/johnnywrightiv/nooro-server for more information on running the API server.
 
 ## Usage
 
