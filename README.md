@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+
+# Next.js Task Management App
+This is a Next.js app for managing tasks, connected to a backend server running on localhost:4000. You will need to run the backend server separately, requiring two separate terminals instances (one for the backend and one for the frontend).
 
 ## Getting Started
 
-First, run the development server:
-
+### Clone Repositories
+**Frontend (this app):**
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone <frontend-repo-url>
+cd <frontend-repo-folder>
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Backend (API server):**
+```bash
+git clone <backend-repo-url>
+cd <backend-repo-folder>
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Install Dependencies
+**Frontend:**
+```bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Backend:**
+```bash
+npm install
+```
 
-## Learn More
+### Run the Servers
+**Start Backend (localhost:4000):**
+```bash
+npm start
+```
 
-To learn more about Next.js, take a look at the following resources:
+**Start Frontend (localhost:3000):**
+```bash
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Configure Frontend
+Add a `.env.local` file in the frontend folder with:
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Usage
 
-## Deploy on Vercel
+1. Start both servers.
+2. Open [http://localhost:3000](http://localhost:3000) in your browser.
+3. Manage tasks and see updates connected to the backend.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Troubleshooting
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **API issues?** Ensure both servers are running and `NEXT_PUBLIC_API_URL` is correct.
+- **Port conflicts?** Change ports in the `.env` files or commands.
+
+You're all set!
